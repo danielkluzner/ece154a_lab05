@@ -6,11 +6,11 @@
 // as seen in 5.2.4 of "Harris & Harris"
 
 module alu(
-       input [2:0] f,
        input [31:0]  a,
        input [31:0]  b,
+       input [2:0]   f,
        output [31:0] y,
-       output zero
+       output 	     zero
 );
 
    assign zero = (y == 32'b0) ? 1'b1 : 1'b0;
