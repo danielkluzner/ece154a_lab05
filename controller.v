@@ -11,6 +11,13 @@ module controller(input logic [5:0] op, funct,
   maindec md(op, memtoreg, memwrite, branch,
              alusrc, regdst, regwrite, jump, aluop);
   aludec ad(funct, aluop, alucontrol);
-  
-  assign pcsrc = branch & zero;
+
+// MODIFICATION
+  always_comb
+    case(op) // accomodates bne
+      6'b000101: pcsrc = branch & ~zero; // if zero = 0 (rs != rt) then branch
+      default: pcsrc = branch & zero; // otherwise, as normal
+    endcase
+// MODIFICATION
+
 endmodule

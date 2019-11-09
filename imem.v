@@ -4,7 +4,10 @@ module imem(input logic [5:0] a,
   logic [31:0] RAM[63:0];
 
   initial
-    $readmemh("memfile.dat", RAM);
+
+// MODIFICATION
+    $readmemh("memfile2.dat", RAM); // now reads from instructions containing ori and bne
+// MODIFICATION
     
   assign rd = RAM[a]; // word aligned
 endmodule

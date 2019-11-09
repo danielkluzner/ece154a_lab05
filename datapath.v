@@ -10,7 +10,13 @@ module datapath(
 		output logic [31:0] aluout, writedata,
 		input logic [31:0]  readdata
 );
-   
+
+// MODIFICATION
+   logic [31:0] signtemp; // the sign-extended immediate
+   logic [31:0] zerotemp; // the zero-extended immediate
+// MODIFICATION   
+
+
    logic [4:0] 			    writereg;
    logic [31:0] 		    pcnext, pcnextbr, pcplus4, pcbranch;
    logic [31:0] 		    signimm, signimmsh;
@@ -32,7 +38,16 @@ module datapath(
    mux2 #(5) wrmux(instr[20:16], instr[15:11],
 		   regdst, writereg);
    mux2 #(32) resmux(aluout, readdata, memtoreg, result);
-   signext se(instr[15:0], signimm);
+
+// MODIFICATION
+   signext se(instr[15:0], signtemp); // sign-extends immediate
+   zeroext ze(instr[15:0], zerotemp); // zero-extends immediate
+   always_comb
+       case({alucontrol, regdst}) // accomodates ori's zero extension
+	 4'b0010: signimm = zerotemp; // assigns the zero-extended immediate to the "final" 32-bit immediate
+	 default: signimm = signtemp; // assigns the sign-extended immediate to the "final" 32-bit immediate
+       endcase
+// MODIFICATION
    
    // ALU logic
    mux2 #(32) srcbmux(writedata, signimm, alusrc, srcb);

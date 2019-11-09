@@ -22,10 +22,14 @@ module tb();
   always @(negedge clk)
     begin
       if (memwrite) begin
-        if (dataadr === 84 & writedata === 7) begin
-          $display("Simulation succeeded");
+
+// MODIFICATION
+        if (dataadr === 84 & writedata === 32'hffff7f02) begin // Mem[0x54] = 0xffff7f02 (should be)
+// MODIFICATION
+
+	  $display("Simulation succeeded");
           $stop;
-        end else if (dataadr != = 80) begin
+        end else if (dataadr != 80) begin
           $display("Simulation failed");
           $stop;
         end
