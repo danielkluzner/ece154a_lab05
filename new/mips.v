@@ -35,6 +35,9 @@ module controller(input       clk, reset,
                   output [2:0] alucontrol);
 
 // **PUT YOUR CODE HERE**
+   maindec md();
+   aludec ad();
+   
  
 endmodule
 
