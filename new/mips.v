@@ -35,12 +35,14 @@ module controller(input       clk, reset,
                   output [2:0] alucontrol);
 
 // **PUT YOUR CODE HERE**
+   
    wire 		       pcwrite, branch;
+   wire [1:0] 		       aluop;
+   
    maindec md(op, pcwrite, memwrite, irwrite,
 	      regwrite, alusrca, branch, iord,
 	      memtoreg, regdst, alusrcb,
 	      pcsrc, aluop);
-   wire [1:0] 		       aluop;
    aludec ad(funct, aluop, alucontrol);
    
    assign pcen = (zero && branch) || pcwrite;
@@ -58,6 +60,7 @@ module datapath(input        clk, reset,
                 output [31:0] adr, writedata, 
                 input [31:0] readdata);
 
-// **PUT YOUR CODE HERE** 
-
+// **PUT YOUR CODE HERE**
+ 
+   
 endmodule
