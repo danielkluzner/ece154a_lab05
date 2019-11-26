@@ -93,6 +93,39 @@ module datapath(input        clk, reset,
                 input [31:0] readdata);
 
 // **PUT YOUR CODE HERE**
- 
+
+   // opening logic
+   wire [31:0] 		     pcnext, pc;
+   wire [31:0] 		     instr, data;
+   wire [4:0] 		     writereg, wd3;
+   wire [31:0] 		     rd1, rd2, A, B;
+   wire [31:0] 		     SrcA, SrcB;
+   wire [31:0] 		     signtemp;
+   wire [31:0] 		     aluresult, aluout;
+   
+   flopr_en #(32) pcreg(clk, reset, pcnext, pcen, pc);
+   mux2 #(32) pcmux(pc, aluout, iord, adr);
+   flopr_en #(32) instrreg(clk, reset, readdata, irwrite, instr);
+   flopr #(32) datareg(clk, reset, readdata, data);
+
+   // register file logic
+   regfile rf(clk, regwrite, instr[25:21], instr[20:16], writereg, wd3, rd1, rd2);
+   mux2 #(5) writeregmux(instr[20:16], instr[15:11], regdst, writereg);
+   flopr #(32) areg(clk, reset, rd1, A);
+   flopr #(32) breg(clk, reset, rd2, B);
+   mux2 #(32) wd3mux(aluout, data, memtoreg, wd3);
+
+   signext se(instr[15:0], signtemp);
+   mux2 #(32) srcAmux(pc, A, alusrca, SrcA);
+   mux4 #(32) srcBmux(B, 32'h4, signtemp, {signtemp[31:2], 2'b00}, alusrcb, srcB);
+
+   // alu logic
+   alu ALU(SrcA, SrcB, alucontrol, aluresult, zero);
+   flopr #(32) alureg(clk, reset, aluresult, aluout);
+   mux4 pcsrcmux(aluresult, aluout, {pc[31:28], instr[25:0], 2'b00}, 32'b0, pcsrc, pcnext);
+
+   assign writedata = B;
+   assign op = instr[31:26];
+   assign funct = instr[5:0];
    
 endmodule
