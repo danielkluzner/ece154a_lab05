@@ -24,12 +24,12 @@ module tb();
       if (memwrite) begin
 
 // MODIFICATION
-        if (dataadr === 84 & writedata === 32'hffff7f02) begin // Mem[0x54] = 0xffff7f02 (should be)
+        if (dataadr === 32'h54 & writedata === 32'h7) begin // Mem[0x54] = 0x7 (should be)
 // MODIFICATION
 
 	  $display("Simulation succeeded");
           $stop;
-        end else if (dataadr != 80) begin
+        end else if (dataadr != 32'h50) begin
           $display("Simulation failed");
           $stop;
         end

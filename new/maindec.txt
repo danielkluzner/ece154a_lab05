@@ -1,4 +1,3 @@
-
 module maindec(input clk, reset,
 	       input [5:0]  op,
 	       output reg	  pcwrite, memwrite, irwrite,
@@ -9,7 +8,7 @@ module maindec(input clk, reset,
   reg [15:0] controls;
   reg convenience;
 
-  reg [3:0] nextstate;
+  reg [3:0] 		       nextstate;
 
   always @(posedge clk) begin
 
@@ -39,19 +38,19 @@ module maindec(input clk, reset,
      end
 
      case(nextstate)
-      4'b0: controls = 16'h5010;
-      4'b0001: controls = 16'h0030;
-      4'b0010: controls = 16'h0420;
-      4'b0011: controls = 16'h0100;
-      4'b0100: controls = 16'h0880;
-      4'b0101: controls = 16'h2100;
-      4'b0110: controls = 16'h0402;
-      4'b0111: controls = 16'h0840;
-      4'b1000: controls = 16'h0605;
-      4'b1001: controls = 16'h0420;
-      4'b1010: controls = 16'h0800;
-      4'b1011: controls = 16'h4008;
-      default: controls = 16'bxxxxxxxxxxxxxxxx; // illegal state
+      4'b0: controls <= 16'h5010;
+      4'b0001: controls <= 16'h0030;
+      4'b0010: controls <= 16'h0420;
+      4'b0011: controls <= 16'h0100;
+      4'b0100: controls <= 16'h0880;
+      4'b0101: controls <= 16'h2100;
+      4'b0110: controls <= 16'h0402;
+      4'b0111: controls <= 16'h0840;
+      4'b1000: controls <= 16'h0605;
+      4'b1001: controls <= 16'h0420;
+      4'b1010: controls <= 16'h0800;
+      4'b1011: controls <= 16'h4008;
+      default: controls <= 16'bxxxxxxxxxxxxxxxx; // illegal state
     endcase // case (state)
 
     assign {convenience, pcwrite, memwrite, irwrite,
